@@ -120,6 +120,9 @@ const frameWrapper = ref<null|HTMLDivElement>(null)
 const externalFrame = ref<null|HTMLIFrameElement>(null)
 let iFrameBody: undefined | HTMLBodyElement
 
+// Flag to track if URL change originates from iframe navigation (to prevent reload loop)
+let changeFromIframe = false
+
 const setIFrameSize = ({ width, height }: DOMRectReadOnly) => {
   if (!externalFrame.value) {
     return
@@ -165,6 +168,11 @@ const emitLoaded = (iFrame: HTMLIFrameElement) => {
   currentLocation.value = iFrameWindow.location.href
   const search = iFrameWindow.location.search
   const query = Object.fromEntries((new URLSearchParams(search)).entries()) as (Record<string, string>)
+
+  // Set flag to prevent watch from triggering iframe reload
+  // when the URL change originates from iframe navigation
+  changeFromIframe = true
+
   emit('iframeLoaded', {
     query,
     iFrame,
@@ -180,6 +188,11 @@ const contentObserver = new MutationObserver((entries) => {
 })
 
 watch(queryString, (_value) => {
+  if (changeFromIframe) {
+    logger.debug('SKIP IFRAME REFRESH (change from iframe)', { request: requestedLocation.value, current: currentLocation.value })
+    changeFromIframe = false
+    return
+  }
   if (requestedLocation.value !== currentLocation.value) {
     logger.debug('TRIGGER IFRAME REFRESH', { request: requestedLocation.value, current: currentLocation.value })
     loading.value = true
