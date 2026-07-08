@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- support NC v33 and up
+- support NC v33 to v34
 - support PHP 8.5 and up
 
 ### Changed
