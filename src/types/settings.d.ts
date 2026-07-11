@@ -19,5 +19,5 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-export type EmailAddressChoice =
-  'userIdEmail'|'userPreferencesEmail'|'userChosenEmail'|'fixedSingleAddress';
+export type EmailAddressChoice
+  = 'userIdEmail'|'userPreferencesEmail'|'userChosenEmail'|'fixedSingleAddress';

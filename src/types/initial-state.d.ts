@@ -20,9 +20,9 @@
  */
 
 export interface InitialState {
-  state: 'error'|'success',
-  reason: 'norcurl'|'noemail'|'login'|'carddav',
-  emailUserId: string|null,
-  externalLocation: string|null,
-  showTopLine: boolean,
+  state: 'error'|'success';
+  reason: 'norcurl'|'noemail'|'login'|'carddav';
+  emailUserId: string|null;
+  externalLocation: string|null;
+  showTopLine: boolean;
 }
