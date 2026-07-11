@@ -19,6 +19,7 @@
 <template>
   <RoundCubeWrapper v-bind="$attrs"
                     :externalLocation="externalLocation"
+                    :hideTopLine="!initialState?.showTopLine"
                     :query="routeQuery"
   />
 </template>
