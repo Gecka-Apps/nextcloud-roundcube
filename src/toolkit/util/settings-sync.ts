@@ -56,7 +56,8 @@ async function fetchSettings({ section, settings }: FetchSettingsArgs) {
     // Object.assign(settings, response.data);
     for (const [key, value] of Object.entries(response.data)) {
       if (!equals(settings[key], value)) {
-        settings[key] = value;
+        // the server sends null for unset values
+        settings[key] = value ?? settings[key];
       }
     }
     return true;
