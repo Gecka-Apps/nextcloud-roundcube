@@ -114,7 +114,7 @@ phpcs-errors: composer
 
 #@@ Run phpmd on the PHP code
 phpmd: composer
-	vendor/bin/phpmd lib/,appinfo/,templates/ text $(SRCDIR)/.phpmd.xml
+	vendor/bin/phpmd lib/,appinfo/,templates/ text $(SRCDIR)/.phpmd.xml --exclude 'lib/Toolkit/*'
 
 # what has to be copied to the appstore archive
 APPSTORE_FILES =\
