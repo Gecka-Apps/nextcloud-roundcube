@@ -162,13 +162,13 @@
              type="checkbox"
              name="allowManualLogin"
              value="1"
-             :disabled="loading"
+             :disabled="loading || settings.emailAddressChoice === 'fixedSingleAddress' || settings.forceSSO"
              @change="saveSetting('allowManualLogin')"
       >
       <label for="allow-manual-login"
-             :title="t(appName, 'Allow users to login manually to RoundCube without pre-configured credentials. Useful for shared mailboxes or when SSO is not available.')"
+             :title="t(appName, 'Only applies to the per-user address modes. Ignored for a fixed shared address and when single sign-on is forced.')"
       >
-        {{ t(appName, 'Allow manual RoundCube login (skip credential check).') }}
+        {{ t(appName, 'Fall back to the RoundCube login form when a user has no configured credentials.') }}
       </label>
       <input id="enable-ssl-verify"
              v-model="settings.enableSSLVerify"

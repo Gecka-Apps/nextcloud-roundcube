@@ -83,17 +83,25 @@ class PageController extends Controller
     $reason = null;
 
     $roundCubeUrl = $this->authenticator->externalURL();
-    $allowManualLogin = $this->config->getAppValue(Config::ALLOW_MANUAL_LOGIN);
     $credentials = null;
     if (empty($roundCubeUrl)) {
       $state = self::ERROR_STATE;
       $reason = self::ERROR_NORCURL_REASON;
-    } elseif (!$allowManualLogin) {
-      // Only check credentials if manual login is not allowed
+    } else {
+      $emailAddressChoice = $this->config->getAppValue(Config::EMAIL_ADDRESS_CHOICE, Config::EMAIL_ADDRESS_CHOICE_DEFAULT);
+      $fixedSingle = $emailAddressChoice === Config::EMAIL_ADDRESS_CHOICE_FIXED_SINGLE_ADDRESS;
+      $forceSSO = $this->config->getAppValue(Config::FORCE_SSO);
+      // Manual login is a per-user fallback: it lets a user authenticate
+      // directly in RoundCube when their own credentials are missing. It does
+      // not apply to the shared fixed-address mailbox or when SSO is enforced.
+      $allowManualLogin = $this->config->getAppValue(Config::ALLOW_MANUAL_LOGIN) && !$fixedSingle && !$forceSSO;
+
       $credentials = $this->config->emailCredentials();
       if (empty($credentials)) {
-        $state = self::ERROR_STATE;
-        $reason = self::ERROR_NOEMAIL_REASON;
+        if (!$allowManualLogin) {
+          $state = self::ERROR_STATE;
+          $reason = self::ERROR_NOEMAIL_REASON;
+        }
       } elseif (!$this->authenticator->login($credentials['userId'], $credentials['password'])) {
         $state = self::ERROR_STATE;
         $reason = self::ERROR_LOGIN_REASON;
