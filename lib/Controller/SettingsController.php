@@ -179,7 +179,6 @@ class SettingsController extends Controller
           } elseif ($newValue === false) {
             $humanValue = $this->l->t('false');
           }
-          $newValue = (int)$newValue;
         }
         break;
       default:
@@ -190,7 +189,7 @@ class SettingsController extends Controller
       $this->config->deleteAppValue($setting);
       $newValue = self::ADMIN_SETTINGS[$setting]['default'] ?? null;
     } else {
-      $this->config->setAppValue($setting, $newValue, encrypted: $encrypted);
+      $this->config->setAppValue($setting, is_bool($newValue) ? (int)$newValue : $newValue, encrypted: $encrypted);
     }
 
     if ($humanValue === null) {
