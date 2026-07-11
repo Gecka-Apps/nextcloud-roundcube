@@ -294,11 +294,22 @@ Checking this option disables the [custom password setting in the
 user's preferences](#email-password) section and enforces it to
 coincide with the cloud password.
 
+##### Allow Manual Login
+
+If checked, a user whose email credentials are not configured is shown
+the wrapped Roundcube login form instead of an error, so they can sign
+in to Roundcube directly. This is a per-user fallback: it only applies
+to the per-user address modes and is ignored for a fixed single address
+or when single sign-on is forced. Whenever credentials are configured
+they are still used to sign the user in automatically.
+
 ##### Show Roundcube Top Bar
 
 Checking this option keeps the information bar -- including the logout
 button -- of the Roundcube web-mailer. Concerning logout: the default
 is to log-out the user out of Roundcube if it logs out of the cloud.
+When unchecked, the Roundcube logo is hidden along with the bar on the
+elastic skin.
 
 ##### Enable SSL Verification
 

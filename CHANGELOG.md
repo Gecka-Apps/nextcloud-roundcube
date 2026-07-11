@@ -4,12 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [1.3.0] - unreleased
+## [1.3.0] - 2026-07-11
 
 ### Added
 
 - support NC v33 to v34
-- support PHP 8.5 and up
+- support PHP 8.4 to 8.5
+- manual login now falls back to the RoundCube login form when a user
+  has no configured credentials; per-user address modes only, ignored
+  for a fixed shared address or when single sign-on is forced
+- credential errors now show the resolved email address and a link to
+  the personal settings
+- option to hide the RoundCube logo together with the top information
+  bar on the elastic skin
 
 ### Changed
 
