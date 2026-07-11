@@ -412,10 +412,7 @@ class AuthRoundCube
   {
     $response = null;
 
-    if (!empty($rcQuery) && $rcQuery[0] != '/') {
-      $rcQuery = '/'.$rcQuery;
-    }
-    $rcQuery = $this->externalURL().$rcQuery;
+    $rcQuery = rtrim($this->externalURL(), '/').'/'.ltrim($rcQuery, '/');
     // $this->logInfo("URL: '$rcQuery'.");
     try {
       $curl = curl_init();
