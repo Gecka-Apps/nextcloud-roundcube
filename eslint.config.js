@@ -120,6 +120,21 @@ const configOptions = [
       ],
     },
   },
+  {
+    files: [
+      '**/*.js',
+      '**/*.ts',
+      '**/*.cts',
+      '**/*.mts',
+      '**/*.tsx',
+      '**/*.vue',
+    ],
+    rules: {
+      'import-extensions/ban-inline-type-imports': 'off',
+      'perfectionist/sort-named-imports': 'off',
+      'vue/custom-event-name-casing': 'off',
+    },
+  },
 ];
 
 // console.info(configOptions);
