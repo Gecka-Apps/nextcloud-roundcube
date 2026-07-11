@@ -233,4 +233,10 @@ webpackConfig.stats = {
   errorDetails: true,
 };
 
+// No source maps in production: csso re-minifies the extracted CSS and would
+// emit a second, conflicting .css.map alongside mini-css-extract's own.
+if (productionMode) {
+  webpackConfig.devtool = false;
+}
+
 module.exports = webpackConfig;
