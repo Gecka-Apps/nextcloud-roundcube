@@ -173,6 +173,13 @@ router.isReady().then(async () => {
       // DO NOT ALLOW THIS!
       overflow: hidden !important;
   }
+  :deep(.app-content) {
+    // On narrow screens NcContent lays out as a column flex; .app-content has
+    // flex-grow: 0 and collapses to its content height, leaving the RoundCube
+    // frame short. Let it fill the available height.
+    flex-grow: 1;
+    min-height: 0;
+  }
   :deep(.empty-content) {
     h2 ~ p {
       text-align: center;
