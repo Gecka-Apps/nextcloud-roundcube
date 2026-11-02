@@ -1,0 +1,48 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# Builds the app archive with the reusable build-appstore.yml workflow
+# when a GitHub release is published, and attaches it to that release
+# twice: under its versioned name, and as mail_roundcube.tar.gz so that
+# releases/latest/download/mail_roundcube.tar.gz always points to the
+# latest archive.
+name: Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    uses: ./.github/workflows/build-appstore.yml
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      TAG: ${{ github.event.release.tag_name }}
+      VERSION: ${{ needs.build.outputs.version }}
+      ARTIFACT: ${{ needs.build.outputs.artifact }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Check that the tag matches the app version
+        run: |
+          if [ "${TAG#v}" != "$VERSION" ]; then
+            echo "::error::Tag $TAG does not match the version $VERSION in appinfo/info.xml"
+            exit 1
+          fi
+
+      - name: Download the app archive
+        uses: actions/download-artifact@v5
+        with:
+          name: ${{ needs.build.outputs.artifact }}
+
+      - name: Attach the archive to the release
+        run: |
+          cp "$ARTIFACT.tar.gz" mail_roundcube.tar.gz
+          gh release upload "$TAG" "$ARTIFACT.tar.gz" mail_roundcube.tar.gz --clobber
